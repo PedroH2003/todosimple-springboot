@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -83,6 +84,14 @@ public class User {
         this.password = password;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -120,6 +129,7 @@ public class User {
         return true;
     }
 
-    // private List<Task> tasks = new ArrayList<Task>();
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<Task>();
 
 }
