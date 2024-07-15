@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pedro.todosimple.models.User;
 import com.pedro.todosimple.repositories.UserRepository;
+import com.pedro.todosimple.services.exceptions.DataBindingViolationException;
+import com.pedro.todosimple.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -19,7 +21,7 @@ public class UserService {
         Optional<User> user = this.userRepository.findById(id);
         // Utilizamos o Optional pra que caso ele não encontro o usuário no banco ele retorne vazio e não null
 
-        return user.orElseThrow(() -> new RuntimeException(
+        return user.orElseThrow(() -> new ObjectNotFoundException(
             "Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()
         )); 
         // Só vai retornar se o user estiver preenchido, caso contrátrio ele irá realizar um throw exception
@@ -44,7 +46,7 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois há entidades relacionadas!");
         }
     }
 
