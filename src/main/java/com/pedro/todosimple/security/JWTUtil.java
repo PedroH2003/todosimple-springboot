@@ -16,11 +16,13 @@ import io.jsonwebtoken.security.Keys;
 public class JWTUtil {
     
 
-    @Value("$(jwt.secret)")
+    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("$(jwt.expiration)")
+    @Value("${jwt.expiration}")
     private Long expiration;
+    //private Long expiration = 86400000L;
+
 
     public String generateToken(String username) {
         SecretKey key = getKeyBySecret();
