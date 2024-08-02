@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.pedro.todosimple.security.JWTAuthenticationFilter;
 import com.pedro.todosimple.security.JWTUtil;
 
 @Configuration
@@ -64,11 +65,17 @@ public class SecurityConfig {
         // Disable CSRF protection
         http.csrf(csrf -> csrf.disable());   
 
+        authenticationManager(http);
+
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers(new AntPathRequestMatcher("/user", "POST")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/login", "POST")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().authenticated())
+                .authenticationManager(this.authenticationManager);
+
+
+        http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
 
         http.sessionManagement(
                 sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
