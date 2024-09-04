@@ -38,7 +38,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid  @RequestBody UserCreateDTO obj){
+    public ResponseEntity<Void> create(@Valid @RequestBody UserCreateDTO obj){
         User user = this.userService.fromDTO(obj);
         User newUser = this.userService.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
@@ -57,6 +57,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> new_delete() {
+        this.userService.new_delete();
         return ResponseEntity.noContent().build();
     }
 }

@@ -72,6 +72,15 @@ public class UserService {
         }
     }
 
+    public void new_delete(){
+        UserSpringSecurity userSpringSecurity = authenticated();
+        try {
+            this.userRepository.deleteById(userSpringSecurity.getId());
+        } catch (Exception e) {
+            throw new DataBindingViolationException("Não é possivel excluir pois há entidades relacionadas!");
+        }
+    }
+
     public static UserSpringSecurity authenticated(){
         try {
             return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
